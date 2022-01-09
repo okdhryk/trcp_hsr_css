@@ -1,0 +1,56 @@
+# ナビゲーションのための行き先を設定するファイル
+#
+# name:
+# - [日本語の読み]
+# - [英語の読み]
+# pos:
+#   x:  [行き先のx座標]
+#   y:  [行き先のy座標]
+#   yaw:[到着した時の姿勢]
+#
+# How to use: The following is an example. Please check it in your own environment.
+# 
+##!/usr/bin/env python
+#import codecs
+#import yaml
+#
+#try:
+#   with open('WRS_location.yaml') as file:
+#       _ARENA = yaml.safe_load(file)
+#       print(_ANEAN['shelf']['name'][0])
+#except Exception as e:
+#   print('Exception occurred while loading YAML...', file=sys.stderr)
+#   print(e, file=sys.stderr)
+#   sys.exit(1)
+#
+# Author: Hiroyuki Okada
+# Date last modified: 2020/1/4
+# Date created: 2020/1/4
+# Software License Agreement (BSD License)
+# Copyright (c) 2021, Tamagawa University.
+# All rights reserved.
+
+shelf:
+  name:
+  - 本棚
+  - bookshelf
+  pos:
+    x: 2.325
+    y: 4.104
+    yaw: 3
+entrance:
+  name:
+  - 入口
+  - entrance
+  pos:
+    x: 1
+    y: 1
+    yaw: 0
+table:
+  name:
+  - テーブル
+  - table
+  pos:
+    x: 10
+    y: 20
+    yaw: 30
