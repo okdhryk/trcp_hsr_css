@@ -18,11 +18,11 @@ from TMClib import *
 
 
 def main():
-
-  #  led = HSRled()
- #   led.changeGradual()
-    pass
+  rospy.init_node('hsrb_change_led_color')
+  
+  led = HSRled()
+  led.changeGradual()
 
 
 if __name__ == '__main__':
-    main()
+  main()
