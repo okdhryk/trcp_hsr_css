@@ -17,16 +17,18 @@
 from TMClib import *
 from spoken_text import *
 
-_EXPLAIN1 = [u'グリッパの間に重さをはかりたいものを持ってきてください',
+_EXPLAIN1 = [u'発話のテストプラグラムです．テストをしています．',
              u'Please set the object between my gripper']
 
 
 def main():
+    rospy.init_node('hsrb_speech_test')
     speaker = Speaker()
     speaker.speak_sentence(_EXPLAIN1[speaker.get_language()])
+    #発話が終わるまで待ち合わせる
+    print("end")
 
-    pass
 
 
 if __name__ == '__main__':
-    main()
+    main() 

@@ -1,35 +1,44 @@
-#!/usr/bin/env python
-# Copyright (C) 2017 Toyota Motor Corporation
-"""Change Status LED Color Sample"""
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from hsrb_interface import Robot
 import rospy
-from std_msgs.msg import ColorRGBA
 
-_LED_INPUT_DATA_SIZE = 256
-_DEFAULT_COLOR = ColorRGBA(g=0.2, b=0.6)
+# ロボット機能を使うための準備
+robot = Robot()
+base = robot.try_get('omni_base')
+tts = robot.try_get('default_tts')
+whole_body = robot.try_get('whole_body')
 
+def go_and_say(pos=(0,0,0), contents=''):
+    try:
+        base.go_abs(pos[0], pos[1], pos[2], 180.0)
+    except:
+        rospy.logerr('Fail go')
+    tts.say(contents)
+    rospy.sleep(5)
 
-def main():
-    # Create Publisher to change status led color
-    status_led_topic = '/hsrb/command_status_led_rgb'
-    led_pub = rospy.Publisher(status_led_topic,
-                              ColorRGBA, queue_size=100)
+_SENARIO = [
+    ((2.9, 0.36, -1.57), u'ここが僕のお気に入りのソファだ。くつろいでテレビが見れるよ。僕は座れないけどね。'),
+    ((5.4, 0.07, -1.57), u'ここからお台場の海が見えるよ。綺麗だね。'),
+    ((5.7, 1.6, 3.14), u'ここはIH式のレンジだ。何を作ろうかな。'),
+    ((5.7, 2.6, 3.14), u'ここがシンクだ。水は出ないけど。'),
+    ((4.4, 5.8, -1.57), u'ここでみんなで食事が出来るんだ。'),
+    ((5.2, 6.3, 0.07), u'これは近未来テレビ。何とジェスチャーで操作できるんだ。すごいね。'),
+    ((1.5, 3.3, 1.57), u'ここが僕の一番のおすすめスポットの気になる木。落ち着くな。'),
+    ((0.0, 0.0, 3.14), u'今日の説明はこれでおしまい。ばいばい。')]
 
-    # Wait for connection
-    while led_pub.get_num_connections() == 0:
-        rospy.sleep(0.1)
+if __name__=='__main__':
+    # 初期姿勢に遷移
+    try:
+        whole_body.move_to_go()
+    except:
+        rospy.logerr('Fail move_to_go')
 
-    # 50Hz is enough frequency to do gradual color change
-    rate = rospy.Rate(50)
+    # まずは一言
+    tts.say(u'こんにちはHSRだよ')
 
-    # Value r changes gradually (value g and b are fixed)
-    color = _DEFAULT_COLOR
-    for num in range(_LED_INPUT_DATA_SIZE):
-        color.r = num / float(_LED_INPUT_DATA_SIZE - 1)
-        led_pub.publish(color)
-        rate.sleep()
-
-
-if __name__ == '__main__':
-    rospy.init_node('hsrb_change_led_color')
-    main()
-    #test
+    goal =  ((0.0, 0, 0), u'ここが僕のお気に入りのソファだ。')
+    go_and_say(goal[0], goal[1])
+#   for unit in _SENARIO:
+#        go_and_say(unit[0], unit[1])
